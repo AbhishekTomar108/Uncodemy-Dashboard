@@ -185,7 +185,7 @@ export default function
     tempInpval.TrainerName = tempTrainer[0].Trainer
     tempInpval.BatchTiming = tempTrainer[0].BatchTime
     tempInpval.Batch = tempTrainer[0].Batch
-    tempInpval.TrainerID = tempTrainer[0]._id
+    tempInpval.TrainerID = tempTrainer[0].TrainerID
     setINP(tempInpval)
   }
 

@@ -11,6 +11,7 @@ const StudentFee = require("../models/FeeSchema");
 const uploaditem = require("../models/UploadedItem");
 const submititem = require("../models/Submitteditem");
 const messagemodel = require("../models/Messagemodel");
+const Studentmessagemodel = require("../models/StudentMessage");
 const runningBatches = require("../models/RunningBatch");
 const FixDemo = require("../models/FixDemo");
 const inst = require("../models/inst");
@@ -778,31 +779,9 @@ router.post('/sendmessage', async (req, res) => {
 
 
 router.post('/sendStudentMessage', async (req, res) => {
-    // console.log("req body =",req.body)
-    const message = req.body.message;
-    const from = req.body.from;
-    const checkid = req.body.checkid;
-    const file = req.body.fileName;
-    // // console.log('check id =', checkid, message, req.body)
-
-    const data = {
-        user: {
-            id: checkid
-        },
-    }
-
-    // // // console.log('data =', data.user)
-    // // console.log('file type =', typeof (file), file)
-    const messageauthtoken = await jwt.sign(data, jwt_secret)
-
 
     try {
-        let senddata = await messagemodel.create({
-            message,
-            from,
-            messageid: messageauthtoken,
-            file: file
-        })
+        let senddata = await Studentmessagemodel.create(req.body)
 
         res.send(senddata)
     }

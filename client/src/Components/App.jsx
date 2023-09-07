@@ -87,8 +87,8 @@ export default function App() {
             <Route exact path="admin/RegisteredStudent" element={<RegisteredStudent />} />
             <Route exact path="EditStudents/:id" element={[<Sidebar />, <EditStudents />]} />
             <Route exact path="student/" element={ <StudentDashboard />} />
-            <Route exact path="student/Sendmessage" element={[<StudentSlidebar />, <StudentMessage />]} />
-            <Route exact path="/student/StudentAssig" element={[<StudentSlidebar />, <StudentAssig />]} />
+            <Route exact path="student/Sendmessage" element={<StudentMessage />} />
+            <Route exact path="/student/StudentAssig" element={<StudentAssig />} />
             <Route exact path="fullattendance/:id" element={[<StudentSlidebar />, <Attandance />]} />
             <Route exact path="Aboutstudent/:id" element={[<Sidebar />, <AboutStudent />]} />
             <Route exact path="AboutTrainer/:id" element={[<Sidebar />, <AboutTrainer />]} />

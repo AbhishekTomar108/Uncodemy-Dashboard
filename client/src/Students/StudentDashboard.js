@@ -5,8 +5,8 @@ import OtherLink from './VideoAssignment'
 import Header from '../Components/Header'
 import { useParams, useNavigate } from 'react-router-dom';
 import { StudentContext } from '../context/StudentState';
-import AllMessage from './AllMessage'
-import VideoAssignment from './VideoAssignment'
+// import AllMessage from './AllMessage'
+// import VideoAssignment from './VideoAssignment'
 import Swal from 'sweetalert2'
 import Sidebar from '../Components/Sidebar'
 import StudentSlidebar from './StudentSlidebar'
@@ -30,7 +30,7 @@ export default function StudentDashboard() {
 
   useEffect(() => {
 
-    fetchStudentStatus(id)
+    fetchStudentStatus()
 
   }, [])
 
@@ -68,10 +68,9 @@ export default function StudentDashboard() {
         }
         receivemessage(status.data._id)
         localStorage.setItem('studentData', JSON.stringify(status.data))
-        getFiles(status.data.Batch, status.data.TrainerID)
       }
       else {
-        console.log('else fecth')
+        console.log('else fetch')
         navigation('/')
         alert('you are not authorized')
       }
@@ -91,14 +90,11 @@ export default function StudentDashboard() {
       },
     });
     const messageData = await messageRes.json();
+    console.log("message =",messageData)
     setMessage(messageData.message)
   }
 
-  const getFiles = async(batch,trainerId)=>{
 
-    let fileData = await ContextValue.getFiles(batch,trainerId)
-    console.log("file =",fileData)
-}
 
 
   const [assignment, setAssignment] = useState("pending")
@@ -188,12 +184,12 @@ export default function StudentDashboard() {
                     <div className="card-header d-block">
                       <h4 className="card-title">Recevied Msg </h4>
                     </div>
-                    <div className="card-body">
+                  {/* {message &&   <div className="card-body">
                       <div className='message-section mb-2'>
                         <strong className='justify-content-center'>message</strong>
                         <strong className='justify-content-center'>from</strong>
                       </div>
-                      {message && message.map((data, index) => {
+                      {message.map((data, index) => {
                         return (
                           <li className="mb-0 ">
                             <div className='message-section'>
@@ -205,7 +201,7 @@ export default function StudentDashboard() {
                         )
                       })}
 
-                    </div>
+                    </div>} */}
                   </div>
                 </div>
 
@@ -358,7 +354,7 @@ export default function StudentDashboard() {
 
 
 
-                        </div> : <AllMessage />}
+                        </div> : ""}
                         
                         <div className='dashboard-navigation-section'>
 
@@ -394,7 +390,7 @@ export default function StudentDashboard() {
                         }
 
 
-                        {status === "Video" && <VideoAssignment Batch={student.Batch}/>}
+                        {/* {status === "Video" && <VideoAssignment Batch={student.Batch}/>} */}
 
                       </div>
 

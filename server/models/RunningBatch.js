@@ -9,16 +9,11 @@ const runningBatchSchema = new mongoose.Schema({
     },
     Trainer: {
         type: String,
-
     },
     
     TrainerID: {
         type: String,
 
-    },
-    TrainerId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'uploads'
     },
     BatchTime: {
         type: String,

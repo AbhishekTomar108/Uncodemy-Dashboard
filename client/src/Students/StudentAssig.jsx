@@ -3,6 +3,7 @@ import Header from '../Components/Header'
 import AssignmnetStatus from './AssignmnetStatus'
 import Assignment from './Assignment'
 import VideoAssignment from './VideoAssignment'
+import StudentSlidebar from './StudentSlidebar'
 
 
 function StudentAssig() {
@@ -12,6 +13,9 @@ function StudentAssig() {
     return (
         <>
             <Header />
+              
+      <div className='sidebar-main-container'>
+<StudentSlidebar/>
             <div className="Assignment-section">
                 <div className='dashboard-navigation-section'>
 
@@ -46,6 +50,7 @@ function StudentAssig() {
                 </div>
                 }
                 {status === "Video" && <VideoAssignment/>}
+            </div>
             </div>
         </>
     )

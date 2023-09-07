@@ -334,23 +334,11 @@ const StudentState = (props) => {
 
     }
 
-    const getFiles = async(batch,trainerID)=>{
-      let getFilesData = await fetch('http://localhost:8000/getfile',{
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "batch":batch,
-          "TrainerID":trainerID
-        }, 
-      });
-      getFilesData = await getFilesData.json()
-      console.log("get files",getFilesData)
-    }
     
 
   return (
     <div>
-        <StudentContext.Provider value={{student:student,Admin:Admin, teacher:teacher , updateTeacher:updateTeacher ,updateAdmin:updateAdmin, updateStudent:updateStudent, loggedInPerson:loggedInPerson, updateLoggedInPerson:updateLoggedInPerson, checkAdmin:checkAdmin, checkTrainer:checkTrainer, checkStudent:checkStudent, getAllBatchCourse:getAllBatchCourse, getRunningBatch:getRunningBatch, getAllCounselor:getAllCounselor,getAllTrainer:getAllTrainer, getSingleStudent:getSingleStudent, getSingleTrainer:getSingleTrainer,getAllStudent:getAllStudent,checkCounsellor:checkCounsellor, getPaymentStatus:getPaymentStatus, getSingleCounselor:getSingleCounselor, getBatchByTrainer:getBatchByTrainer,getFiles:getFiles}}>
+        <StudentContext.Provider value={{student:student,Admin:Admin, teacher:teacher , updateTeacher:updateTeacher ,updateAdmin:updateAdmin, updateStudent:updateStudent, loggedInPerson:loggedInPerson, updateLoggedInPerson:updateLoggedInPerson, checkAdmin:checkAdmin, checkTrainer:checkTrainer, checkStudent:checkStudent, getAllBatchCourse:getAllBatchCourse, getRunningBatch:getRunningBatch, getAllCounselor:getAllCounselor,getAllTrainer:getAllTrainer, getSingleStudent:getSingleStudent, getSingleTrainer:getSingleTrainer,getAllStudent:getAllStudent,checkCounsellor:checkCounsellor, getPaymentStatus:getPaymentStatus, getSingleCounselor:getSingleCounselor, getBatchByTrainer:getBatchByTrainer}}>
             {props.children}
         </StudentContext.Provider>
     </div>

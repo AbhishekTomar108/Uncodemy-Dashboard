@@ -10,7 +10,7 @@ export default function VideoAssignment(props) {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                "Batch":props.Batch
+                "Batch": props.Batch
             }
         });
         const data = await res.json();
@@ -32,7 +32,7 @@ export default function VideoAssignment(props) {
                 <div className='other-link-container'>
                     <h3 className='first-heading'>Video </h3>
                     <table id="datatable" className="table table-striped table-bordered" cellSpacing="0" width="100%">
-                        {/ ...Table header /}
+                        {/ Table header /}
                         <tbody>
                             {videos.map((video, index) => (
                                 <tr key={index}>

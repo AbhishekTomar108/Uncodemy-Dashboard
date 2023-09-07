@@ -97,7 +97,7 @@ function AllMessage() {
                 </tr>
               </thead>
               <tbody>
-                {message && message.map((data, index) => {
+                {/* {message && message.map((data, index) => {
                   return (
                     <tr >
                       <td > {index + 1}</td>
@@ -108,7 +108,7 @@ function AllMessage() {
                     </tr>
 
                   )
-                })}
+                })} */}
               </tbody>
             </table>
           </div>

@@ -264,6 +264,8 @@ export default function Home() {
     <>
 
       <Header />
+          
+      <div className='sidebar-main-container'>
      <Sidebar/>  
       <div className="content-body">
         {/* row */}
@@ -568,6 +570,7 @@ export default function Home() {
 
           </div>
         </div>
+      </div>
       </div>
 
 

@@ -53,7 +53,7 @@ function NewBatch() {
     }
 
     const updateTrainer = async (trainerName) => {
-        console.log('trainer update ', trainerData)
+        console.log('trainer update ', trainerData[trainerName])
         let trainerCode = trainer.filter(data => {
             return data.Name === trainerName
         })[0].code
@@ -177,7 +177,7 @@ function NewBatch() {
             }
         })
         let batch = `${batchDetail.course}/${new Date().getFullYear()}/${batchDetail.month}/${batchDetail.trainer}/${count}`
-        console.log('new batch =', batch, batchDetail)
+        console.log('new batch =', batch, batchDetail,currentTrainer)
 
         let addedNewBatch = await fetch('http://localhost:8000/addNewBatch', {
             method: 'POST',
@@ -221,7 +221,7 @@ function NewBatch() {
                                                 <option disabled selected>--select Trainer--</option>
                                                 {trainer.map((data, index) => {
                                                     console.log("trainer data =", data.Name)
-                                                    trainerData[data.value] = data._id
+                                                    trainerData[data.Name] = data._id
                                                     return (
                                                         <option value={data.Name}>{data.Name}</option>
                                                     )

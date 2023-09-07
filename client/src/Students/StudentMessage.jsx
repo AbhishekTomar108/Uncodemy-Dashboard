@@ -3,12 +3,16 @@ import img from "../Components/img/7.jpg"
 import Header from '../Components/Header';
 import { useNavigate } from 'react-router-dom';
 import { StudentContext } from '../context/StudentState';
+import StudentSlidebar from './StudentSlidebar'
 
 
 export default function StudentMessage() {
   document.title="StudentDashboard - Send Messages"
   let ContextValue = useContext(StudentContext);
   const navigation = useNavigate()
+
+  const [message, setMessage] = useState()
+  const [student, setStudent] = useState()
 
   useEffect(()=>{
     fetchStudentStatus()
@@ -21,7 +25,7 @@ export default function StudentMessage() {
       
   console.log('status of student =', status);
   if(status.status==="active"){
-  
+     setStudent(status.data)
   }
   else{
     console.log('else fecth')
@@ -34,213 +38,55 @@ export default function StudentMessage() {
     }
   }
 
-  const [isChecked, setIsChecked] = useState(false);
-  const [fileName, setFileName] = useState()
-  const [selectedImage, setSelectedImage] = useState();
 
-  const [end, setEnd] = useState(10)
-  const [start, setStart] = useState(0)
-  const [allStudentData, setAllStudentData] = useState(JSON.parse(localStorage.getItem('allStudent')))
+  const sendStudentMessage = async () => {
 
-  const [currentStudent, setCurrentStudent] = useState(JSON.parse(localStorage.getItem('allStudent')).slice(start, end).map(data => {
-    return data
-  })
-  )
-  const totalItem = JSON.parse(localStorage.getItem('allStudent')).length
-  const [file, setFile] = useState()
-  let tempCurrentStudent;
-  const individual = allStudentData.map(data => {
-    console.log('current student')
-    return (
-      {
-        status: "off",
-        check: false
-      })
-  })
-  console.log('individual check =', individual)
-  const [individualCheck, setIndividualCheck] = useState(individual)
+const currentDate = new Date();
 
-  const [detail, setDetail] = useState({
+const day = String(currentDate.getDate()).padStart(2, '0');
+const month = String(currentDate.getMonth() + 1).padStart(2, '0'); 
+const year = currentDate.getFullYear();
 
-    trainer: null,
-    batch: null,
-    course: null
-  })
-  const [message, setMessage] = useState()
-  const handleFileChange = (event) => {
-    setSelectedImage(event.target.files[0]);
-    setFileName(event.target.files[0].name)
-  };
+// Format the date in "DD-MM-YYYY" pattern
+const formattedDate = `${day}-${month}-${year}`;
+
+console.log(formattedDate); // Output: "06-09-2023"
 
 
-
-
-  const moveItem = () => {
-    console.log('move item', totalItem - end, JSON.parse(localStorage.getItem('allStudent')), totalItem);
-    // console.log('move item',totalItem);
-
-
-
-    if ((totalItem - end) <= 10) {
-      console.log('if end')
-      setStart(end)
-      setEnd(end + (totalItem - end))
-      tempCurrentStudent = [...currentStudent]
-
-      tempCurrentStudent = allStudentData.slice(end, (end + (totalItem - end))).map(data => {
-        return data
-      })
-
-
-      setCurrentStudent(tempCurrentStudent)
-
-    }
-    else if ((totalItem - end) > 10) {
-      console.log('else end')
-
-      setStart(end)
-      setEnd(end + 10)
-      tempCurrentStudent = [...currentStudent]
-
-      tempCurrentStudent = allStudentData.slice(end, end + 10).map(data => {
-        return data
-      })
-
-
-      setCurrentStudent(tempCurrentStudent)
-    }
-
-  }
-
-  const backItem = () => {
-
-    if (start == 0) {
-      setStart(start)
-      setEnd(end)
-      setCurrentStudent(currentStudent)
-    }
-
-    else {
-      setEnd(start)
-      setStart(start - 10)
-
-      tempCurrentStudent = [...currentStudent]
-
-      tempCurrentStudent = allStudentData.slice((start - 10), start).map(data => {
-        return data
-      })
-
-
-      setCurrentStudent(tempCurrentStudent)
-    }
-
-
-  }
-
-  const IndividualChecked = (event, index) => {
-    console.log('check =', event.target.checked, index)
-
-    let tempInd = [...individualCheck]
-
-    tempInd[index] = { ...tempInd[index], status: 'on', check: event.target.checked };
-    setIndividualCheck(tempInd)
-  }
-
-  const allcheck = (event) => {
-    setIsChecked(event.target.checked)
-
-    let tempInd = individualCheck.map(data => {
-      return ({
-        status: "off",
-        check: event.target.checked
-      }
-      )
-    })
-
-    setIndividualCheck(tempInd)
-  }
-
-  const sendMessage = async () => {
     const formData = new FormData();
-    formData.append('file', selectedImage);
+    formData.append("message",message)
+    formData.append("receiverId",student.TrainerID)
+    formData.append("senderId",student._id)
+    formData.append("date",formattedDate)
 
-    await fetch('http://localhost:8000/upload', {
-      method: 'POST',
-      body: formData,
-    })
-
-    let checkedId = currentStudent.filter((data, index) => {
-
-
-      if (individualCheck[index].check === true) {
-
-        return true;
-      }
-      return false;
-    })
-      .map((data, index) => {
-        return {
-          id: data._id,
-        };
-      });
-
-    console.log('check id =', checkedId)
-
-    let data = await fetch('http://localhost:8000/sendmessage', {
+    console.log("message =",message,student._id,student.TrainerID)
+  
+    let data = await fetch('http://localhost:8000/sendStudentMessage', {
       method: 'POST',
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ message: message, from: "admin", checkid: checkedId, fileName: fileName })
+      body: JSON.stringify()
     })
   }
 
-  const filterStudent = () => {
-    console.log('all student =', allStudentData)
-    let filterStudent = allStudentData.filter((data, index) => {
 
-      return (detail.trainer != null ? data.TrainerName === detail.trainer : data.TrainerName) && (detail.batch != null ? data.BatchTiming === detail.batch : data.BatchTiming) && (detail.course != null ? data.Course === detail.course : data.Course)
-
-    })   
-    const individual = filterStudent.map(data => {
-      console.log('current student')
-      return (
-        {
-          status: "off",
-          check: false
-        })
-    })
-    console.log('individual check =', individual)
-    setIndividualCheck(individual)
-    setCurrentStudent(filterStudent)
-  }
 
   return (
     <>
    
       <Header />
+      <div className='sidebar-main-container'>
+<StudentSlidebar/>
     
       <div className="content-body">
         <div className="container-fluid">
           <div className='d-none d-lg-flex'>
-          <div className='message-form'>
-              
-              <div className="batch-thumb thumb">
-                <label className="form-label">Batch :</label>
-                <select className="custom-select mr-sm-2" required name='batch' onChange={(e) => setDetail({ ...detail, [e.target.name]: e.target.value })} >
-                  <option selected>Choose...</option>
-                  <option>All </option>
-                  <option>Admin</option>
-                  <option>Trainer</option>                  
-                  <option>Counselor</option>                  
-                </select>
-              </div>             
-              <button className='filter-btn' onClick={filterStudent}>Filter</button>
-            </div>
+        
           </div>
           <div className="row">
             <div className="col-lg-12">
-              <div className="card">
+              <div className="card message-card">
                 <div className="card-body">
                   <div className="email-right  ml-sm-4 ml-sm-0">
                     <div className="compose-content">
@@ -257,28 +103,18 @@ export default function StudentMessage() {
                     </div>
 
 
-                    <h5 className="mb-4">
-                      <i className="fa fa-paperclip" /> Attatchment
-                    </h5>
                     <form
-                      onSubmit={(e) => sendMessage(e)}
+                      onSubmit={(e) => sendStudentMessage(e)}
                       action="#"
                       className="d-flex flex-column align-items-center justify-content-center"
                     >
-                      <div className="fallback w-100">
-                        <input
-                          type="file"
-                          className="dropify"
-                          name="file"
-                          onChange={handleFileChange}
-                        />
-                      </div>
+                   
                     </form>
                     <div className="text-left mt-4 mb-5">
                       <button
                         className="btn btn-primary btn-sl-sm mr-3"
                         type="button"
-                        onClick={sendMessage}
+                        onClick={sendStudentMessage}
                       >
                         <span className="mr-2">
                           <i className="fa fa-paper-plane" />
@@ -405,6 +241,7 @@ export default function StudentMessage() {
             </div>
           </div>
         </div>
+      </div>
       </div>
 
       {/*---- Include the above in your HEAD tag --------*/}
